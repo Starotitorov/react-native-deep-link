@@ -1,8 +1,8 @@
 import React from 'react';
-import { createDeepLiningHandler } from 'react-native-deep-link';
+import { createDeepLinkingHandler } from 'react-native-deep-link';
 import { NavigationActions } from 'react-navigation';
 
-export default createDeepLiningHandler([
+export default createDeepLinkingHandler([
     {
         name: 'example:',
         routes: [

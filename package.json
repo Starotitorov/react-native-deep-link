@@ -4,7 +4,7 @@
     "description": "React Native deep linking library",
     "main": "index.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "test": "jest"
     },
     "author": "Artem Starotitorov <starotitorov1997@gmail.com>",
     "license": "MIT",
@@ -14,5 +14,14 @@
     },
     "dependencies": {
         "url-parse": "1.2.0"
+    },
+    "devDependencies": {
+        "babel-preset-react-native": "^4.0.0",
+        "jest": "^22.0.4"
+    },
+    "jest": {
+        "modulePathIgnorePatterns": [
+            "<rootDir>/example"
+        ]
     }
 }
