@@ -23,5 +23,9 @@
         "modulePathIgnorePatterns": [
             "<rootDir>/example"
         ]
+    },
+    "repository": {
+        "type": "git",
+        "url": "git@github.com:Starotitorov/react-native-deep-link.git"
     }
 }
