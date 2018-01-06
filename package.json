@@ -3,6 +3,10 @@
     "version": "0.0.1",
     "description": "React Native deep linking library",
     "main": "index.js",
+    "files": [
+        "index.js",
+        "lib/"
+    ],
     "scripts": {
         "test": "jest"
     },

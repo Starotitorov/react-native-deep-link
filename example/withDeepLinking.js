@@ -8,11 +8,12 @@ export default createDeepLinkingHandler([
         routes: [
             {
                 name: '/colors/:color',
-                callback: ({ dispatch }) => ({ params: { color } }) => {
+                callback: ({ dispatch }) => ({ params: { color }, query: { textColor } }) => {
                     dispatch(NavigationActions.navigate({
                         routeName: 'Color',
                         params: {
-                            color: color
+                            color,
+                            textColor
                         }
                     }));
                 }
