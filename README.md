@@ -39,7 +39,7 @@ const withDeepLinking = createDeepLiningHandler([
 ]);
 ```
 
-#### 2. Use HOC returned from createDeepLiningHandler.
+#### 2. Use higher-order component returned from createDeepLiningHandler.
 
 ```js
 export default connect(mapStateToProps, mapDispatchToProps)(withDeepLinking(App));
@@ -49,10 +49,10 @@ export default connect(mapStateToProps, mapDispatchToProps)(withDeepLinking(App)
 
 `createDeepLiningHandler` takes an array of schemes as a parameter. Each scheme should have a `name` and an array of `routes`.
 
-Each route should have a `name` and a `callback` to be invoked in case of successful mapping of url to route expression. To specify named url parameters in a route `name` add `:` before a parameter name.
+Each route should have a `name` and a `callback` to be invoked in case of successful mapping of url to route expression set using `name` property. To specify named url parameters follow the next pattern `:<parameter_name>`.
 Examples: `/users/:userId`, `/conversations/:conversationId/messages/:messageId`.
 
-Route `callback` is a high order function which receives component props and returns a function. The function receives an object with the next set of fields:
+Route `callback` is a higher-order function which receives component props and returns a function. An object with the next set of fields will be passed to the function:
 ```js
 {
     scheme: 'example:',

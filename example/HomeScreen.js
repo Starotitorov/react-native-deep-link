@@ -3,8 +3,8 @@ import { View, Text, StyleSheet, FlatList, TouchableOpacity, Linking } from 'rea
 
 const URLS = [
     'example://colors/green',
-    'example://colors/%230f0',
-    'example://colors/%230f0?textColor=%23f00'
+    'example://colors/%23fff400',
+    'example://colors/green?textColor=red'
 ];
 
 const ListItem = ({ url, onPressItem }) =>
