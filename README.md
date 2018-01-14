@@ -10,11 +10,15 @@ React Native deep linking library.
 npm i --save react-native-deep-link
 ```
 
-**Important:** To know how to handle deep links in react-native applications take a look at [docs](https://facebook.github.io/react-native/docs/linking.html)
+**Important:** To know how to configure ios and android take a look at [docs](https://facebook.github.io/react-native/docs/linking.html)
 
 ## Example
 
 Example is available in example folder.
+
+You can follow a [tutorial](https://medium.com/@starotitorov1997/handle-deep-links-in-react-native-apps-b22055149b3a) with a step by step implementation.
+
+## Usage
 
 #### 1. Create deep linking handler.
 
