@@ -1,8 +1,16 @@
 # react-native-deep-link
 
-## Overview
-
 React Native deep linking library.
+To add deep linking to your project just create a routes config.
+The package will do the rest!
+
+* [Installation](#installation)
+* [Configuring Android](#configuring-android)
+* [Configuring iOS](#configuring-ios)
+* [Example](#example)
+* [Usage](#usage)
+* [Contributing](#contributing)
+* [License](#license)
 
 ## Installation
 
@@ -10,7 +18,59 @@ React Native deep linking library.
 npm i --save react-native-deep-link
 ```
 
-**Important:** To know how to configure ios and android take a look at [docs](https://facebook.github.io/react-native/docs/linking.html)
+## Configuring Android
+
+For instructions on how to add support for deep linking on Android, refer to [Enabling Deep Links for App Content - Add Intent Filters for Your Deep Links](https://developer.android.com/training/app-links/deep-linking.html#adding-filters).
+
+If you wish to receive the intent in an existing instance of MainActivity, you may set the `launchMode` of MainActivity to `singleTask` in `AndroidManifest.xml`. See `<activity>` documentation for more information.
+
+```
+<activity
+  android:name=".MainActivity"
+  android:launchMode="singleTask">
+```
+
+## Configuring iOS
+
+On iOS, you'll need to link `RCTLinking` to your project by following the steps described [here](https://facebook.github.io/react-native/docs/linking-libraries-ios.html#manual-linking). If you also want to listen to incoming app links during your app's execution, you'll need to add the following lines to your `*AppDelegate.m`:
+
+```
+// iOS 9.x or newer
+#import <React/RCTLinkingManager.h>
+
+- (BOOL)application:(UIApplication *)application
+   openURL:(NSURL *)url
+   options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
+{
+  return [RCTLinkingManager application:application openURL:url options:options];
+}
+```
+
+If you're targeting iOS 8.x or older, you can use the following code instead:
+
+```
+// iOS 8.x or older
+#import <React/RCTLinkingManager.h>
+
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
+  sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+{
+  return [RCTLinkingManager application:application openURL:url
+                      sourceApplication:sourceApplication annotation:annotation];
+}
+```
+
+If your app is using [Universal Links](https://developer.apple.com/library/content/documentation/General/Conceptual/AppSearch/UniversalLinks.html), you'll need to add the following code as well:
+
+```
+- (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity
+ restorationHandler:(void (^)(NSArray * _Nullable))restorationHandler
+{
+ return [RCTLinkingManager application:application
+                  continueUserActivity:userActivity
+                    restorationHandler:restorationHandler];
+}
+```
 
 ## Example
 
@@ -23,27 +83,29 @@ You can follow a [tutorial](https://medium.com/@starotitorov1997/handle-deep-lin
 #### 1. Create deep linking handler.
 
 ```js
-const withDeepLinking = createDeepLiningHandler([
-    {
-        name: 'example:',
-        routes: [
-            {
-                name: '/colors/:color',
-                callback: ({ dispatch }) => ({ params: { color } }) => {
-                    dispatch(NavigationActions.navigate({
-                        routeName: 'Color',
-                        params: {
-                            color
-                        }
-                    }));
-                }
-            }
-        ]
-    }
-]);
+/**
+ * The function receives component props and returns a function.
+ * The result of parsing of deep link will be passed to the returned function.
+ * You can find the object structure in the API docs below.
+ */
+const handleColorScreenDeepLink = ({ dispatch }) => ({ params: { color } }) => {
+   dispatch(NavigationActions.navigate({
+       routeName: 'Color',
+       params: { color }
+   }));
+}
+
+const withDeepLinking = createDeepLiningHandler([{
+    name: 'example:',
+    routes: [{
+        name: '/colors/:color',
+        // Function to be called on link receive.
+        callback: handleColorScreenDeepLink
+    }]
+}]);
 ```
 
-#### 2. Use higher-order component returned from createDeepLiningHandler.
+#### 2. Use higher-order component returned from createDeepLinkingHandler.
 
 ```js
 export default connect(mapStateToProps, mapDispatchToProps)(withDeepLinking(App));
@@ -72,4 +134,4 @@ You are welcome! Create pull requests and help to improve the package.
 
 ## License
 
-React-native-deep-link is licensed under the [MIT License](LICENSE).
+react-native-deep-link is licensed under the [MIT License](LICENSE).

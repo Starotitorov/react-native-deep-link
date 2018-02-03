@@ -12,6 +12,14 @@
     },
     "author": "Artem Starotitorov <starotitorov1997@gmail.com>",
     "license": "MIT",
+    "homepage": "https://github.com/Starotitorov/react-native-deep-link",
+    "repository": {
+        "type": "git",
+        "url": "git@github.com:Starotitorov/react-native-deep-link.git"
+    },
+    "bugs": {
+        "url": "https://github.com/Starotitorov/react-native-deep-link/issues"
+    },
     "peerDependencies": {
         "react": ">0.14",
         "react-native": ">0.20"
@@ -27,9 +35,5 @@
         "modulePathIgnorePatterns": [
             "<rootDir>/example"
         ]
-    },
-    "repository": {
-        "type": "git",
-        "url": "git@github.com:Starotitorov/react-native-deep-link.git"
     }
 }
