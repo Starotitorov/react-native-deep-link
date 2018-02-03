@@ -1,0 +1,94 @@
+{
+    "extends": "airbnb",
+    "parser": "babel-eslint",
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        },
+        "ecmaVersion": 7,
+        "sourceType": "module"
+    },
+    "plugins": [
+        "react",
+        "react-native"
+    ],
+    "rules": {
+        "arrow-body-style": [
+            "error",
+            "as-needed"
+        ],
+        "arrow-parens": [
+            "error",
+            "as-needed"
+        ],
+        "comma-dangle": [
+            "error",
+            "never"
+        ],
+        "consistent-return": "off",
+        "import/extensions": [
+            "error",
+            "as-needed"
+        ],
+        "import/no-unresolved": [
+            "error",
+            {
+                "ignore": [
+                    "^react$",
+                    "^react-native$"
+                ]
+            }
+        ],
+        "import/prefer-default-export": "off",
+        "indent": [
+            "error",
+            4,
+            {
+                "SwitchCase": 1
+            }
+        ],
+        "jsx-a11y/href-no-hash": "off",
+        "no-empty": [
+            "error",
+            {
+                "allowEmptyCatch": true
+            }
+        ],
+        "no-plusplus": [
+            "error",
+            {
+                "allowForLoopAfterthoughts": true
+            }
+        ],
+        "no-underscore-dangle": [
+            "error",
+            {
+                "allow": [
+                    "_error"
+                ],
+                "allowAfterThis": true
+            }
+        ],
+        "react-native/no-color-literals": "error",
+        "react-native/no-inline-styles": "error",
+        "react-native/no-unused-styles": "error",
+        "react-native/split-platform-components": "error",
+        "react/jsx-filename-extension": "off",
+        "react/jsx-indent": [
+            "error",
+            4
+        ],
+        "react/jsx-indent-props": [
+            "error",
+            4
+        ],
+        "react/require-default-props": "off"
+    },
+    "settings": {
+        "import/resolver": {
+            "babel-module": {
+                "extensions": [".js"]
+            }
+        }
+    }
+}
