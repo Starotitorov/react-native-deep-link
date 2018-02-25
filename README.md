@@ -1,5 +1,9 @@
 # react-native-deep-link
 
+[![Build Status](https://travis-ci.org/Starotitorov/react-native-deep-link.svg?branch=master)](https://travis-ci.org/Starotitorov/react-native-deep-link)
+[![npm version](https://img.shields.io/npm/v/react-native-deep-link.svg)](https://www.npmjs.com/package/react-native-deep-link)
+[![NPM Downloads](https://img.shields.io/npm/dt/react-native-deep-link.svg)](https://www.npmjs.com/package/react-native-deep-link)
+
 React Native deep linking library.
 To add deep linking to your project just create a routes config.
 The package will do the rest!
