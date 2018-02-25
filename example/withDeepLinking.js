@@ -1,23 +1,11 @@
 import React from 'react';
 import { createDeepLinkingHandler } from 'react-native-deep-link';
-import { NavigationActions } from 'react-navigation';
+import { handleColorScreenDeepLink } from './handlers'
 
-export default createDeepLinkingHandler([
-    {
-        name: 'example:',
-        routes: [
-            {
-                name: '/colors/:color',
-                callback: ({ dispatch }) => ({ params: { color }, query: { textColor } }) => {
-                    dispatch(NavigationActions.navigate({
-                        routeName: 'Color',
-                        params: {
-                            color,
-                            textColor
-                        }
-                    }));
-                }
-            }
-        ]
-    }
-]);
+export default createDeepLinkingHandler([{
+    name: 'example:',
+    routes: [{
+        name: '/colors/:color',
+        callback: handleColorScreenDeepLink
+    }]
+}]);

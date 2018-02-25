@@ -95,7 +95,7 @@ const handleColorScreenDeepLink = ({ dispatch }) => ({ params: { color } }) => {
    }));
 }
 
-const withDeepLinking = createDeepLiningHandler([{
+const withDeepLinking = createDeepLinkingHandler([{
     name: 'example:',
     routes: [{
         name: '/colors/:color',
@@ -113,7 +113,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(withDeepLinking(App)
 
 ## API
 
-`createDeepLiningHandler` takes an array of schemes as a parameter. Each scheme should have a `name` and an array of `routes`.
+`createDeepLinkingHandler` takes an array of schemes as a parameter. Each scheme should have a `name` and an array of `routes`.
 
 Each route should have a `name` and a `callback` to be invoked in case of successful mapping of url to route expression set using `name` property. To specify named url parameters follow the next pattern `:<parameter_name>`.
 Examples: `/users/:userId`, `/conversations/:conversationId/messages/:messageId`.
