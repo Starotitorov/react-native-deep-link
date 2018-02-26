@@ -1,6 +1,6 @@
 {
     "name": "react-native-deep-link",
-    "version": "0.1.4",
+    "version": "0.1.5",
     "description": "React Native deep linking library",
     "main": "index.js",
     "files": [
