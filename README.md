@@ -8,6 +8,11 @@ React Native deep linking library.
 To add deep linking to your project just create a routes config.
 The package will do the rest!
 
+If you are using react-navigation you should know that it supports deep linking out of the box,
+**but it is a common practice to add navigation state to redux**. **In this case you have to handle deep links manually**.
+**This package solves the problem, provides ready to use solution to handle deep links.**
+Adding navigation to redux gives you more control on navigation state, allows to dispatch navigation actions from your redux actions. 
+
 * [Installation](#installation)
 * [Configuring Android](#configuring-android)
 * [Configuring iOS](#configuring-ios)
@@ -84,7 +89,40 @@ You can follow a [tutorial](https://medium.com/@starotitorov1997/handle-deep-lin
 
 ## Usage
 
-#### 1. Create deep linking handler.
+#### Using withDeepLinking HOC
+
+```js
+/**
+ * The function receives component props and returns a function.
+ * The result of parsing of deep link will be passed to the returned function.
+ * You can find the object structure in the API docs below.
+ */
+const handleColorScreenDeepLink = ({ dispatch }) => ({ params: { color } }) => {
+   dispatch(NavigationActions.navigate({
+       routeName: 'Color',
+       params: { color }
+   }));
+}
+
+/**
+ * The function receives component props and returns a function.
+ * The result of parsing of deep link will be passed to the returned function.
+ * You can find the object structure in the API docs below.
+ */
+const handleColorsScreenDeepLink = ({ dispatch }) => () => {
+   dispatch(NavigationActions.navigate({ routeName: 'Colors' }));
+}
+
+DeepLinking.registerRoute('example:', '/colors/:color', handleColorScreenDeepLink);
+
+DeepLinking.registerRoute('example:', '/colors', handleColorsScreenDeepLink);
+
+export default connect(mapStateToProps, mapDispatchToProps)(withDeepLinking(App));
+```
+
+#### Using createDeepLinkingHandler
+
+1. Create deep linking handler.
 
 ```js
 /**
@@ -109,7 +147,7 @@ const withDeepLinking = createDeepLinkingHandler([{
 }]);
 ```
 
-#### 2. Use higher-order component returned from createDeepLinkingHandler.
+2. Use higher-order component returned from createDeepLinkingHandler.
 
 ```js
 export default connect(mapStateToProps, mapDispatchToProps)(withDeepLinking(App));
@@ -121,6 +159,25 @@ export default connect(mapStateToProps, mapDispatchToProps)(withDeepLinking(App)
 
 Each route should have a `name` and a `callback` to be invoked in case of successful mapping of url to route expression set using `name` property. To specify named url parameters follow the next pattern `:<parameter_name>`.
 Examples: `/users/:userId`, `/conversations/:conversationId/messages/:messageId`.
+
+Also DeepLinking module has several useful methods to manage routes and schemes such as `registerRoute`, `unregisterRoute`, `registerScheme`, `unregisterScheme`, `registerSchemes`, `unregisterSchemes`.
+
+```js
+DeepLinking.registerRoute('example:', '/colors/:color', handler);
+DeepLinking.unregisterRoute('example:', '/colors/:color');
+
+DeepLinking.registerScheme('example:', [{ name: '/colors/:color', callback }]);
+DeepLinking.unregisterScheme('example:');
+
+DeepLinking.registerSchemes([{
+    name: 'example:',
+    routes: [{
+        name: '/colors/:color',
+        callback
+    }]
+}]);
+DeepLinking.unregisterSchemes();
+```
 
 Route `callback` is a higher-order function which receives component props and returns a function. An object with the next set of fields will be passed to the function:
 ```js
