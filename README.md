@@ -5,7 +5,7 @@
 [![NPM Downloads](https://img.shields.io/npm/dt/react-native-deep-link.svg)](https://www.npmjs.com/package/react-native-deep-link)
 
 React Native deep linking library.
-To add deep linking to your project just create a routes config, the package will do the rest!
+If you need to handle deep links in your project, just create a routes config, the package will do the rest!
 
 If you are using react-navigation you should know that it supports deep linking out of the box,
 **but it is a common practice to add navigation state to redux**.
@@ -107,7 +107,7 @@ const handleColorScreenDeepLink = ({ params: { color } }) => ({ dispatch }) => {
    }));
 }
 
-const withDeepLinking = createDeepLinkingHandler([{
+const withDeepLinkingHandler = createDeepLinkingHandler([{
     name: 'example:',
     routes: [{
         name: '/colors/:color',
@@ -120,7 +120,7 @@ const withDeepLinking = createDeepLinkingHandler([{
 2. Use higher-order component returned from createDeepLinkingHandler.
 
 ```js
-export default connect(mapStateToProps, mapDispatchToProps)(withDeepLinking(App));
+export default connect(mapStateToProps, mapDispatchToProps)(withDeepLinkingHandler(App));
 ```
 
 ## API

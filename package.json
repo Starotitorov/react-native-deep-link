@@ -25,6 +25,7 @@
         "react-native": ">0.20"
     },
     "dependencies": {
+        "route-parser": "0.0.5",
         "url-parse": "^1.2.0"
     },
     "devDependencies": {
