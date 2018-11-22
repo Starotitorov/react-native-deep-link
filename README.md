@@ -4,15 +4,12 @@
 [![npm version](https://img.shields.io/npm/v/react-native-deep-link.svg)](https://www.npmjs.com/package/react-native-deep-link)
 [![NPM Downloads](https://img.shields.io/npm/dt/react-native-deep-link.svg)](https://www.npmjs.com/package/react-native-deep-link)
 
+[![NPM](https://nodei.co/npm/react-native-deep-link.png)](https://nodei.co/npm/react-native-deep-link/)
+
 React Native deep linking library.
 If you need to handle deep links in your project, just create a routes config, the package will do the rest!
 
-If you are using react-navigation you should know that it supports deep linking out of the box,
-**but it is a common practice to add navigation state to redux**.
-**In this case, you have to handle deep links manually**.
-**This package solves the problem, provides ready to use solution to handle deep links.**
-Adding navigation to redux gives you more control on navigation state, allows to dispatch navigation actions from your redux actions. 
-
+* [Why do I need this package?](#why-do-i-need-this-package)
 * [Installation](#installation)
 * [Configuring Android](#configuring-android)
 * [Configuring iOS](#configuring-ios)
@@ -21,6 +18,32 @@ Adding navigation to redux gives you more control on navigation state, allows to
 * [API](#api)
 * [Contributing](#contributing)
 * [License](#license)
+
+## Why do I need this package?
+
+**First of all, this is a package for React Native applications.
+You can use it irrespective of what solution you are using for navigation in our project,
+what state management library you have added to the project. I will try to provide some examples below
+just to show why you may need this package.**
+
+If you are using react-navigation, you should know that it supports deep linking out of the box,
+**but sometimes this solution does not meet your needs well.** 
+
+**React-navigation deep linking implementation only allows you to navigate user to some screen when application receives the url.
+This package provides you an ability to decide how to handle the url by specifying your own handler in the routes config,
+read the [docs](#usage) below.**
+
+Also, it is a common practice to add navigation state to redux.
+**In this case, you have to handle deep links manually**.
+**This package solves the problem, provides ready to use solution.**
+Adding navigation to redux gives you more control on the navigation state,
+allows to dispatch navigation actions from your redux-thunk actions.
+
+**In general, this package does not require Redux as a dependency,
+so you can use it in your React Native apps without Redux.**
+For example, you can implement your own NavigationService
+as it is described in [react-navigation docs](https://reactnavigation.org/docs/en/navigating-without-navigation-prop.html)
+and use it in route callbacks, read the [docs](#usage) below.
 
 ## Installation
 
@@ -84,21 +107,22 @@ If your app is using [Universal Links](https://developer.apple.com/library/conte
 
 ## Example
 
-Example is available in example folder.
+Example is available in the `example/` folder.
 
-You can follow a [tutorial](https://medium.com/@starotitorov1997/handle-deep-links-in-react-native-apps-b22055149b3a) with a step by step implementation.
+You can follow a [tutorial](https://medium.com/@starotitorov1997/handle-deep-links-in-react-native-apps-b22055149b3a)
+with a step by step implementation.
 
 ## Usage
 
-#### Using createDeepLinkingHandler
+After installing the package, you need to follow a few simple steps:
 
 1. Create deep linking handler.
 
 ```js
 /**
- * The function receives a result of url parsing,
+ * This function receives a result of url parsing,
  * you can find the structure of this object in the API docs below, and returns a function.
- * The function receives component props.
+ * The returned function receives component props.
  */
 const handleColorScreenDeepLink = ({ params: { color } }) => ({ dispatch }) => {
    dispatch(NavigationActions.navigate({
@@ -111,7 +135,6 @@ const withDeepLinkingHandler = createDeepLinkingHandler([{
     name: 'example:',
     routes: [{
         name: '/colors/:color',
-        // Function to be called on link receive.
         callback: handleColorScreenDeepLink
     }]
 }]);
@@ -132,7 +155,7 @@ Follow the next pattern to specify named url parameters `:<parameter_name>`.
 Examples: `/users/:userId`, `/conversations/:conversationId/messages/:messageId`.
 
 Route `callback` is a higher-order function which receives the result of url parsing and returns a function.
-This function receives component props.
+This returned function receives component props.
 
 A result of url parsing is an object with the next set of properties:
 ```js
