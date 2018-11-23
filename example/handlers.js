@@ -1,6 +1,6 @@
 import { NavigationActions } from 'react-navigation';
 
-export const handleColorScreenDeepLink = ({ dispatch }) => ({ params: { color }, query: { textColor } }) => {
+export const handleColorScreenDeepLink = ({ params: { color }, query: { textColor }}) => ({ dispatch }) => {
     dispatch(NavigationActions.navigate({
         routeName: 'Color',
         params: {
