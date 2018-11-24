@@ -21,8 +21,8 @@ If you need to handle deep links in your project, just create a routes config, t
 
 ## Why do I need this package?
 
-**First of all, this is a package for React Native applications.
-You can use it irrespective of what solution you are using for navigation in our project,
+**This package allows you to handle deep links in React Native applications.
+You can use it irrespective of what solution you are using for navigation in your project,
 what state management library you have added to the project. I will try to provide some examples below
 just to show why you may need this package.**
 
@@ -33,10 +33,10 @@ If you are using react-navigation, you should know that it supports deep linking
 This package provides you an ability to decide how to handle the url by specifying your own handler in the routes config,
 read the [docs](#usage) below.**
 
-Also, it is a common practice to add navigation state to redux.
-**In this case, you have to handle deep links manually**.
+Also, in real applications it is a common practice to add navigation state to Redux.
+**According to the react-navigation documentation, in this case you have to handle deep links manually**.
 **This package solves the problem, provides ready to use solution.**
-Adding navigation to redux gives you more control on the navigation state,
+Adding navigation to Redux gives you more control on the navigation state,
 allows to dispatch navigation actions from your redux-thunk actions.
 
 **In general, this package does not require Redux as a dependency,
@@ -112,6 +112,8 @@ Example is available in the `example/` folder.
 You can follow a [tutorial](https://medium.com/@starotitorov1997/handle-deep-links-in-react-native-apps-b22055149b3a)
 with a step by step implementation.
 
+In the `NavigationServiceExample/` folder you can find an example of using the package in the application without Redux.
+
 ## Usage
 
 After installing the package, you need to follow a few simple steps:
@@ -124,18 +126,20 @@ After installing the package, you need to follow a few simple steps:
  * you can find the structure of this object in the API docs below, and returns a function.
  * The returned function receives component props.
  */
-const handleColorScreenDeepLink = ({ params: { color } }) => ({ dispatch }) => {
-   dispatch(NavigationActions.navigate({
-       routeName: 'Color',
-       params: { color }
-   }));
+const handleChannelDeepLink = ({ params: { channelId } }) => ({ dispatch, user }) => {
+    // navigateUserToLoginScreen, addUserToChannel are redux-thunk actions, which was defined somewhere in the code.
+    if (!user) {
+        return dispatch(navigateUserToLogInScreen(channelId));
+    }
+    
+    dispatch(addUserToChannel(channelId));
 }
 
 const withDeepLinkingHandler = createDeepLinkingHandler([{
     name: 'example:',
     routes: [{
-        expression: '/colors/:color',
-        callback: handleColorScreenDeepLink
+        expression: '/channels/:channelId',
+        callback: handleChannelDeepLink
     }]
 }]);
 ```
@@ -143,8 +147,14 @@ const withDeepLinkingHandler = createDeepLinkingHandler([{
 2. Use higher-order component returned from createDeepLinkingHandler.
 
 ```js
-export default connect(mapStateToProps, mapDispatchToProps)(withDeepLinkingHandler(App));
+export default connect(
+    state => ({
+        user: currentUserSelector(state)
+    })
+)(withDeepLinkingHandler(App));
 ```
+
+In the `NavigationServiceExample/` folder you can find an example of using the package in the application without Redux.
 
 ## API
 
