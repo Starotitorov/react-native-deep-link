@@ -50,7 +50,8 @@
     "jest": {
         "testURL": "http://localhost",
         "modulePathIgnorePatterns": [
-            "<rootDir>/example"
+            "<rootDir>/example",
+            "<rootDir>/navigation-service-example"
         ]
     }
 }

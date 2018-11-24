@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { addNavigationHelpers } from 'react-navigation';
 import { connect } from 'react-redux';
 import AppNavigator from './AppNavigator';
