@@ -1,4 +1,3 @@
-import React from 'react';
 import { createDeepLinkingHandler } from 'react-native-deep-link';
 import { handleColorScreenDeepLink } from './handlers'
 

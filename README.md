@@ -7,7 +7,7 @@
 [![NPM](https://nodei.co/npm/react-native-deep-link.png)](https://nodei.co/npm/react-native-deep-link/)
 
 React Native deep linking library.
-If you need to handle deep links in your project, just create a routes config, the package will do the rest!
+If you need to handle deep links in your project, just create a schemes config, the package will do the rest!
 
 * [Why do I need this package?](#why-do-i-need-this-package)
 * [Installation](#installation)
@@ -22,15 +22,15 @@ If you need to handle deep links in your project, just create a routes config, t
 ## Why do I need this package?
 
 **This package allows you to handle deep links in React Native applications.
-You can use it irrespective of what solution you are using for navigation in your project,
-what state management library you have added to the project. I will try to provide some examples below
+The package can be added to your project, irrespective of what solution you are using for navigation,
+what state management library you decided to use. I will try to provide some examples below
 just to show why you may need this package.**
 
 If you are using react-navigation, you should know that it supports deep linking out of the box,
 **but sometimes this solution does not meet your needs well.** 
 
 **React-navigation deep linking implementation only allows you to navigate user to some screen when application receives the url.
-This package provides you an ability to decide how to handle the url by specifying your own handler in the routes config,
+This package provides you an ability to decide how to handle the url by specifying your own handler in the config,
 read the [docs](#usage) below.**
 
 Also, in real applications it is a common practice to add navigation state to Redux.
@@ -39,7 +39,7 @@ Also, in real applications it is a common practice to add navigation state to Re
 Adding navigation to Redux gives you more control on the navigation state,
 allows to dispatch navigation actions from your redux-thunk actions.
 
-**In general, this package does not require Redux as a dependency,
+**The package does not require Redux as a dependency,
 so you can use it in your React Native apps without Redux.**
 For example, you can implement your own NavigationService
 as it is described in [react-navigation docs](https://reactnavigation.org/docs/en/navigating-without-navigation-prop.html)
@@ -48,7 +48,9 @@ and use it in route callbacks, read the [docs](#usage) below.
 ## Installation
 
 ```
-npm i --save react-native-deep-link
+yarn add react-native-deep-link
+# or with npm
+# npm install --save react-native-deep-link
 ```
 
 ## Configuring Android
@@ -101,16 +103,13 @@ If your app is using [Universal Links](https://developer.apple.com/library/conte
 {
  return [RCTLinkingManager application:application
                   continueUserActivity:userActivity
-                    restorationHandler:restorationHandler];
+                  restorationHandler:restorationHandler];
 }
 ```
 
-## Example
+## Examples
 
-Example is available in the `example/` folder.
-
-You can follow a [tutorial](https://medium.com/@starotitorov1997/handle-deep-links-in-react-native-apps-b22055149b3a)
-with a step by step implementation.
+Example of usage this package in the Redux application available in the `example/` folder.
 
 In the `NavigationServiceExample/` folder you can find an example of using the package in the application without Redux.
 
@@ -118,7 +117,7 @@ In the `NavigationServiceExample/` folder you can find an example of using the p
 
 After installing the package, you need to follow a few simple steps:
 
-1. Create deep linking handler.
+1. Use `createDeepLinkingHandler` to get higher order component, pass schemes config to this function.
 
 ```js
 /**
@@ -126,53 +125,52 @@ After installing the package, you need to follow a few simple steps:
  * you can find the structure of this object in the API docs below, and returns a function.
  * The returned function receives component props.
  */
-const handleInvitationToChannel = ({ params: { channelId } }) => ({ dispatch, user }) => {
-    // navigateUserToLoginScreen, addCurrentUserToChannel are redux-thunk actions,
+const handleInvitationToChannel = ({ params: { channelId } }) => ({ dispatch }) => {
+    // addCurrentUserToChannel is a redux-thunk action,
     // which was defined somewhere in the code.
-    if (!user) {
-        return dispatch(navigateUserToLogInScreen(channelId));
-    }
-    
     dispatch(addCurrentUserToChannel(channelId));
 }
 
-const withDeepLinkingHandler = createDeepLinkingHandler([{
-    name: 'example:',
-    routes: [{
-        expression: '/channels/:channelId',
-        callback: handleInvitationToChannel
-    }]
-}]);
+const schemes = [
+    {
+        name: 'example:',
+        routes: [
+            {
+                expression: '/channels/:channelId',
+                callback: handleInvitationToChannel
+            }
+        ]
+    }
+];
+
+const withDeepLinkingHandler = createDeepLinkingHandler(schemes);
 ```
 
-2. Use higher-order component returned from createDeepLinkingHandler.
+2. Use higher-order component returned from `createDeepLinkingHandler`.
 
 ```js
-export default connect(
-    state => ({
-        user: currentUserSelector(state)
-    })
-)(withDeepLinkingHandler(App));
+export default compose(
+    connect(mapStateToProps, mapDispatchToProps),
+    withDeepLinkingHandler
+)(App);
 ```
 
 **That was it, you have added react-native-deep-link package to the project!**
 
 In the `NavigationServiceExample/` folder you can find an example of using the package in the application without Redux.
 
-Optionally, if you need to handle situations, when url is not supported or handler was not found for the url,
+Optionally, if you need to handle situations, when the url is not supported or a handler was not found for the url,
 you can pass callbacks to the App component wrapped with withDeepLinkingHandler higher order component:
 
 ```js
-import App from './App';
-
 class Example extends Component {
     render() {
         return (
-            <App
+            <WrappedApp
                 onGetInitialUrlError={err => console.log(err)}
                 onCanOpenUrlError={err => console.log(err)}
-                onUrlIsNotSupported={url => console.log(`${url} is not supported`)}
-                onCannotHandleUrl={url => console.log(`can not find handler for the ${url}`)}
+                onUrlIsNotSupported={url => console.log(`The ${url} is not supported.`)}
+                onCannotHandleUrl={url => console.log(`A handler for the ${url} was not found.`)}
             />  
         );
     }
@@ -205,7 +203,7 @@ the next props can be passed to this component:
 
 Property              | Type     | Optional | Default     | Description
 --------------------- | -------- | -------- | ----------- | -----------
-onGetInitialUrlError  | function | true     | () => {}    | a callback, which will be called when [Linking.getInitialUrl](https://facebook.github.io/react-native/docs/linking#getinitialurl) throws an error. The function received the error.
+onGetInitialUrlError  | function | true     | () => {}    | a callback, which will be called when [Linking.getInitialUrl](https://facebook.github.io/react-native/docs/linking#getinitialurl) throws an error. The function receives the error.
 onCanOpenUrlError     | function | true     | () => {}    | a callback, which will be called when [Linking.canOpenUrl](https://facebook.github.io/react-native/docs/linking#canopenurl) throws an error. The function receives the error.
 onUrlIsNotSupported   | function | true     | () => {}    | a callback, which will be called in case the app does not support received url. The function receives the url.
 onCannotHandleUrl     | function | true     | () => {}    | a callback, which will be called in case a handler for the given url was not specified. The function receives the url.
