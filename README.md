@@ -126,20 +126,21 @@ After installing the package, you need to follow a few simple steps:
  * you can find the structure of this object in the API docs below, and returns a function.
  * The returned function receives component props.
  */
-const handleChannelDeepLink = ({ params: { channelId } }) => ({ dispatch, user }) => {
-    // navigateUserToLoginScreen, addUserToChannel are redux-thunk actions, which was defined somewhere in the code.
+const handleInvitationToChannel = ({ params: { channelId } }) => ({ dispatch, user }) => {
+    // navigateUserToLoginScreen, addCurrentUserToChannel are redux-thunk actions,
+    // which was defined somewhere in the code.
     if (!user) {
         return dispatch(navigateUserToLogInScreen(channelId));
     }
     
-    dispatch(addUserToChannel(channelId));
+    dispatch(addCurrentUserToChannel(channelId));
 }
 
 const withDeepLinkingHandler = createDeepLinkingHandler([{
     name: 'example:',
     routes: [{
         expression: '/channels/:channelId',
-        callback: handleChannelDeepLink
+        callback: handleInvitationToChannel
     }]
 }]);
 ```
@@ -154,13 +155,35 @@ export default connect(
 )(withDeepLinkingHandler(App));
 ```
 
+**That was it, you have added react-native-deep-link package to the project!**
+
 In the `NavigationServiceExample/` folder you can find an example of using the package in the application without Redux.
+
+Optionally, if you need to handle situations, when url is not supported or handler was not found for the url,
+you can pass callbacks to the App component wrapped with withDeepLinkingHandler higher order component:
+
+```js
+import App from './App';
+
+class Example extends Component {
+    render() {
+        return (
+            <App
+                onGetInitialUrlError={err => console.log(err)}
+                onCanOpenUrlError={err => console.log(err)}
+                onUrlIsNotSupported={url => console.log(`${url} is not supported`)}
+                onCannotHandleUrl={url => console.log(`can not find handler for the ${url}`)}
+            />  
+        );
+    }
+}
+```
 
 ## API
 
 `createDeepLinkingHandler` takes an array of schemes as a parameter. Each scheme should have a `name` and an array of `routes`.
 
-Each route should have a `expression` and a `callback` to be invoked in case of successful matching of the url to the route specified using `expression` property.
+Each route should have an `expression` and a `callback` to be invoked in case of successful matching of the url to the route specified using an `expression` property.
 Follow the next pattern to specify named url parameters `:<parameter_name>`.
 Examples: `/users/:userId`, `/conversations/:conversationId/messages/:messageId`.
 
@@ -176,6 +199,16 @@ A result of url parsing is an object with the next set of properties:
     params: {} // Url parameters
 }
 ```
+
+`createDeepLinkingHandler` returns a higher order component,
+the next props can be passed to this component:
+
+Property              | Type     | Optional | Default     | Description
+--------------------- | -------- | -------- | ----------- | -----------
+onGetInitialUrlError  | function | true     | () => {}    | a callback, which will be called when [Linking.getInitialUrl](https://facebook.github.io/react-native/docs/linking#getinitialurl) throws an error. The function received the error.
+onCanOpenUrlError     | function | true     | () => {}    | a callback, which will be called when [Linking.canOpenUrl](https://facebook.github.io/react-native/docs/linking#canopenurl) throws an error. The function receives the error.
+onUrlIsNotSupported   | function | true     | () => {}    | a callback, which will be called in case the app does not support received url. The function receives the url.
+onCannotHandleUrl     | function | true     | () => {}    | a callback, which will be called in case a handler for the given url was not specified. The function receives the url.
 
 ## Contributing
 

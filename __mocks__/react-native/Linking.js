@@ -1,9 +1,10 @@
 const getInitialURLMock = jest.fn();
 const addEventListenerMock = jest.fn();
 const removeEventListenerMock = jest.fn();
+const canOpenUrl = jest.fn();
 
 const Linking = {
-    canOpenURL: () => Promise.resolve(true),
+    canOpenURL: jest.fn(),
 
     getInitialURL: getInitialURLMock,
 
@@ -12,6 +13,7 @@ const Linking = {
     removeEventListener: removeEventListenerMock,
 
     mockClear: () => {
+        canOpenUrl.mockClear();
         getInitialURLMock.mockClear();
         addEventListenerMock.mockClear();
         removeEventListenerMock.mockClear();
