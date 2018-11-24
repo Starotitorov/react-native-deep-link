@@ -5,7 +5,7 @@ import { handleColorScreenDeepLink } from './handlers'
 export default createDeepLinkingHandler([{
     name: 'example:',
     routes: [{
-        name: '/colors/:color',
+        expression: '/colors/:color',
         callback: handleColorScreenDeepLink
     }]
 }]);
