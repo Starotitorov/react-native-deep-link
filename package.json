@@ -17,6 +17,14 @@
         "type": "git",
         "url": "git@github.com:Starotitorov/react-native-deep-link.git"
     },
+    "keywords": [
+        "react-native",
+        "react-native-deep-link",
+        "deep-linking",
+        "deep-link",
+        "ios",
+        "android"
+    ],
     "bugs": {
         "url": "https://github.com/Starotitorov/react-native-deep-link/issues"
     },
