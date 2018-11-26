@@ -22,7 +22,7 @@ If you need to handle deep links in your project, just create a schemes config, 
 ## Why do I need this package?
 
 **This package allows you to handle deep links in React Native applications.
-The package can be added to your project, irrespective of what solution you are using for navigation,
+The package can be added to your project irrespective of what solution you are using for navigation,
 what state management library you decided to use. I will try to provide some examples below
 just to show why you may need this package.**
 
@@ -34,8 +34,8 @@ This package provides you an ability to decide how to handle the url by specifyi
 read the [docs](#usage) below.**
 
 Also, in real applications it is a common practice to add navigation state to Redux.
-**According to the react-navigation documentation, in this case you have to handle deep links manually**.
-**This package solves the problem, provides ready to use solution.**
+**According to the react-navigation documentation, in this case you have to handle deep links manually,
+react-native-deep-link provides a solution.**
 Adding navigation to Redux gives you more control on the navigation state,
 allows to dispatch navigation actions from your redux-thunk actions.
 
@@ -109,15 +109,15 @@ If your app is using [Universal Links](https://developer.apple.com/library/conte
 
 ## Examples
 
-Example of usage this package in the Redux application available in the `example/` folder.
+An Example of usage this package in the Redux application available in the `example/` folder.
 
-In the `NavigationServiceExample/` folder you can find an example of using the package in the application without Redux.
+In the `NavigationServiceExample/` folder you can find an example of usage the package in the application without Redux.
 
 ## Usage
 
 After installing the package, you need to follow a few simple steps:
 
-1. Use `createDeepLinkingHandler` to get higher order component, pass schemes config to this function.
+1. Use `createDeepLinkingHandler` to get a higher order component, pass schemes config to this function.
 
 ```js
 /**
@@ -143,35 +143,35 @@ const schemes = [
     }
 ];
 
-const withDeepLinkingHandler = createDeepLinkingHandler(schemes);
+const withDeepLinking = createDeepLinkingHandler(schemes);
 ```
 
-2. Use higher-order component returned from `createDeepLinkingHandler`.
+2. Use the higher-order component returned from `createDeepLinkingHandler`.
 
 ```js
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),
-    withDeepLinkingHandler
+    withDeepLinking
 )(App);
 ```
 
 **That was it, you have added react-native-deep-link package to the project!**
 
-In the `NavigationServiceExample/` folder you can find an example of using the package in the application without Redux.
-
 Optionally, if you need to handle situations, when the url is not supported or a handler was not found for the url,
-you can pass callbacks to the App component wrapped with withDeepLinkingHandler higher order component:
+you can pass callbacks to withDeepLinking:
 
 ```js
-class Example extends Component {
+const App = createDeepLinkingHandler(schemes)(AppComponent);
+
+class Root extends Component {
     render() {
         return (
-            <WrappedApp
+            <App
                 onGetInitialUrlError={err => console.log(err)}
                 onCanOpenUrlError={err => console.log(err)}
                 onUrlIsNotSupported={url => console.log(`The ${url} is not supported.`)}
                 onCannotHandleUrl={url => console.log(`A handler for the ${url} was not found.`)}
-            />  
+            />
         );
     }
 }

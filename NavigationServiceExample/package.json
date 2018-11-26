@@ -9,7 +9,7 @@
   "dependencies": {
     "react": "16.6.1",
     "react-native": "0.57.5",
-    "react-native-deep-link": "git://github.com/Starotitorov/react-native-deep-link.git#release/1.0",
+    "react-native-deep-link": "git://github.com/Starotitorov/react-native-deep-link.git#release/0.2",
     "react-native-gesture-handler": "^1.0.9",
     "react-navigation": "^3.0.0"
   },
