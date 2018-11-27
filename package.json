@@ -33,7 +33,9 @@
         "react-native": ">0.20"
     },
     "dependencies": {
+        "hoist-non-react-statics": "^3.2.0",
         "prop-types": "^15.6.2",
+        "react-display-name": "^0.2.4",
         "route-parser": "0.0.5",
         "url-parse": "^1.2.0"
     },
