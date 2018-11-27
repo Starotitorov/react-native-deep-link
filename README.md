@@ -205,7 +205,7 @@ Property              | Type     | Optional | Default     | Description
 --------------------- | -------- | -------- | ----------- | -----------
 onGetInitialUrlError  | function | true     | () => {}    | a callback, which will be called in case the application throws an error trying to get initial url. The function receives the error.
 onCanOpenUrlError     | function | true     | () => {}    | a callback, which will be called in case the application throws an error trying to open url. The function receives the error.
-onUrlIsNotSupported   | function | true     | () => {}    | a callback, which will be called in case the app does not support received url. The function receives the url.
+onUrlIsNotSupported   | function | true     | () => {}    | a callback, which will be called in case the application does not support received url. The function receives the url.
 onCannotHandleUrl     | function | true     | () => {}    | a callback, which will be called in case a handler for the given url was not specified. The function receives the url.
 
 ## Contributing
