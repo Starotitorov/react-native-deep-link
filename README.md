@@ -120,6 +120,8 @@ After installing the package, you need to follow a few simple steps:
 1. Use `createDeepLinkingHandler` to get a higher order component, pass schemes config to this function.
 
 ```js
+import { createDeepLinkingHandler } from 'react-native-deep-link';
+
 /**
  * This function receives a result of url parsing,
  * you can find the structure of this object in the API docs below, and returns a function.
@@ -161,6 +163,8 @@ Optionally, if you need to handle situations, when the url is not supported or a
 you can pass callbacks to withDeepLinking:
 
 ```js
+import { createDeepLinkingHandler } from 'react-native-deep-link';
+
 const App = createDeepLinkingHandler(schemes)(AppComponent);
 
 class Root extends Component {
