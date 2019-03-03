@@ -9,7 +9,7 @@
   "dependencies": {
     "react": "16.6.1",
     "react-native": "0.57.5",
-    "react-native-deep-link": "^0.2.6",
+    "react-native-deep-link": "^0.2.7",
     "react-native-gesture-handler": "^1.0.9",
     "react-navigation": "^3.0.0"
   },
