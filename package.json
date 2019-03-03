@@ -10,7 +10,7 @@
         "eslint": "eslint ./src",
         "test": "jest"
     },
-    "author": "Artem Starotitorov <starotitorov1997@gmail.com>",
+    "author": "Artsiom Staratsitarau <starotitorov1997@gmail.com>",
     "license": "MIT",
     "homepage": "https://github.com/Starotitorov/react-native-deep-link",
     "repository": {

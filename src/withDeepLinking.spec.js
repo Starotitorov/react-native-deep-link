@@ -8,7 +8,7 @@ jest.mock('Linking', () => {
     const addEventListenerMock = jest.fn();
     const removeEventListenerMock = jest.fn();
     const canOpenUrl = jest.fn();
-    
+
     return {
         canOpenURL: jest.fn(),
         getInitialURL: getInitialURLMock,
