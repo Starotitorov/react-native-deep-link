@@ -1,5 +1,5 @@
 import Route from 'route-parser';
-import Url from './Url';
+import Url from '../src/Url';
 
 const schemeName = 'example:';
 const routeExpression = '/colors/:color';

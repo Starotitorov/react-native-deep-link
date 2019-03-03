@@ -1,9 +1,27 @@
 import React, { Component } from 'react';
-import { Linking } from 'react-native';
+import { Linking, View, Text } from 'react-native';
 import renderer from 'react-test-renderer';
-import withDeepLinking from './withDeepLinking';
+import withDeepLinking from '../src/withDeepLinking';
 
-jest.mock('react-native');
+jest.mock('Linking', () => {
+    const getInitialURLMock = jest.fn();
+    const addEventListenerMock = jest.fn();
+    const removeEventListenerMock = jest.fn();
+    const canOpenUrl = jest.fn();
+    
+    return {
+        canOpenURL: jest.fn(),
+        getInitialURL: getInitialURLMock,
+        addEventListener: addEventListenerMock,
+        removeEventListener: removeEventListenerMock,
+        mockClear: () => {
+            canOpenUrl.mockClear();
+            getInitialURLMock.mockClear();
+            addEventListenerMock.mockClear();
+            removeEventListenerMock.mockClear();
+        }
+    };
+});
 
 const url = 'example://colors/green';
 
@@ -15,7 +33,11 @@ class CustomComponent extends Component {
     static displayName = customComponentDisplayName;
 
     render() {
-        return null;
+        return (
+            <View>
+                <Text>Text</Text>
+            </View>
+        );
     }
 }
 

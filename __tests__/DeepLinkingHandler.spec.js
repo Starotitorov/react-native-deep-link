@@ -1,5 +1,5 @@
-import DeepLinkingHandler from './DeepLinkingHandler';
-import Scheme from './Scheme';
+import DeepLinkingHandler from '../src/DeepLinkingHandler';
+import Scheme from '../src/Scheme';
 
 const schemeName = 'example:';
 

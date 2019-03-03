@@ -1,5 +1,5 @@
 import Route from 'route-parser';
-import Scheme from './Scheme';
+import Scheme from '../src/Scheme';
 
 const schemeName = 'example:';
 const routes = [

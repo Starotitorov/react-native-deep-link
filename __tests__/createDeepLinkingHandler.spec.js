@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import createDeepLinkingHandler from './createDeepLinkingHandler';
+import createDeepLinkingHandler from '../src/createDeepLinkingHandler';
 
 describe('createDeepLinkingHandler', () => {
     it('should return higher order component', () => {
