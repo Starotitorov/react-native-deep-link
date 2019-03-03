@@ -1,4 +1,7 @@
 {
+    "env": {
+        "jest/globals": true
+    },
     "extends": "airbnb",
     "parser": "babel-eslint",
     "parserOptions": {
@@ -10,7 +13,8 @@
     },
     "plugins": [
         "react",
-        "react-native"
+        "react-native",
+        "jest"
     ],
     "rules": {
         "arrow-body-style": [
@@ -89,12 +93,5 @@
             4
         ],
         "react/require-default-props": "off"
-    },
-    "settings": {
-        "import/resolver": {
-            "babel-module": {
-                "extensions": [".js"]
-            }
-        }
     }
 }

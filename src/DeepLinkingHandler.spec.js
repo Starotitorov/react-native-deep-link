@@ -4,9 +4,7 @@ import Scheme from './Scheme';
 const schemeName = 'example:';
 
 describe('DeepLinkingHandler', () => {
-
     describe('registering schemes', () => {
-
         const routes = [
             {
                 expression: '/colors',
@@ -43,12 +41,10 @@ describe('DeepLinkingHandler', () => {
             ];
 
             expect(() => new DeepLinkingHandler(schemes)).toThrow();
-        })
-
+        });
     });
 
     describe('url handling', () => {
-
         const resourceId = 'aeaf15';
         const subResourceId = '1d0449';
         const parameter = 'value';
@@ -98,7 +94,7 @@ describe('DeepLinkingHandler', () => {
 
             const deepLinkingHandler = new DeepLinkingHandler([{
                 name: schemeName,
-                routes: routes
+                routes
             }]);
 
             const callback = deepLinkingHandler.getUrlCallback(url);

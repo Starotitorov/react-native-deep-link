@@ -14,7 +14,6 @@ const routes = [
 ];
 
 describe('Scheme', () => {
-
     it('should create scheme', () => {
         const scheme = Scheme.create(schemeName, routes);
 
@@ -27,5 +26,4 @@ describe('Scheme', () => {
             }))
         );
     });
-
 });

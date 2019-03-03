@@ -6,10 +6,9 @@ const routeExpression = '/colors/:color';
 const routeObject = new Route(routeExpression);
 const textColor = 'red';
 const color = 'green';
-const route = { expression: routeExpression, object: routeObject }
+const route = { expression: routeExpression, object: routeObject };
 
 describe('Url', () => {
-
     it('should return null when the url does not match the route', () => {
         const urlObj = Url.create(`${schemeName}//colors`);
 
@@ -36,5 +35,4 @@ describe('Url', () => {
             }
         });
     });
-
 });

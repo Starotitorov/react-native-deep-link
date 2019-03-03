@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Linking } from 'react-native';
-import getDisplayName from 'react-display-name';
 import hoistNonReactStatics from 'hoist-non-react-statics';
-import { isFunction } from './utils';
+import { isFunction, getDisplayName } from './utils';
 
 const withDeepLinking = deepLinkingHandler => WrappedComponent => {
     class WithDeepLinking extends Component {
@@ -37,6 +36,18 @@ const withDeepLinking = deepLinkingHandler => WrappedComponent => {
             Linking.removeEventListener('url', this.handleURLReceive);
         }
 
+        get filteredProps() {
+            const {
+                onGetInitialUrlError,
+                onCanOpenUrlError,
+                onUrlIsNotSupported,
+                onCannotHandleUrl,
+                ...rest
+            } = this.props;
+
+            return rest;
+        }
+
         handleURLReceive = event => {
             this.handleURL(event.url);
         };
@@ -47,11 +58,9 @@ const withDeepLinking = deepLinkingHandler => WrappedComponent => {
             }
 
             const {
-                onGetInitialUrlError,
                 onCanOpenUrlError,
                 onUrlIsNotSupported,
-                onCannotHandleUrl,
-                ...rest
+                onCannotHandleUrl
             } = this.props;
 
             Linking.canOpenURL(url)
@@ -66,22 +75,14 @@ const withDeepLinking = deepLinkingHandler => WrappedComponent => {
                         return onCannotHandleUrl(url);
                     }
 
-                    callback(rest);
+                    callback(this.filteredProps);
                 })
                 .catch(err => onCanOpenUrlError(err));
         };
 
         render() {
-            const {
-                onGetInitialUrlError,
-                onCanOpenUrlError,
-                onUrlIsNotSupported,
-                onCannotHandleUrl,
-                ...rest
-            } = this.props;
-
             return (
-                <WrappedComponent {...rest} />
+                <WrappedComponent {...this.filteredProps} />
             );
         }
     }

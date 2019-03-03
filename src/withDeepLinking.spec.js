@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
-import Adapter from 'enzyme-adapter-react-16';
 import { Linking } from 'react-native';
-import { shallow, configure } from 'enzyme';
+import renderer from 'react-test-renderer';
 import withDeepLinking from './withDeepLinking';
-
-configure({ adapter: new Adapter() });
 
 jest.mock('react-native');
 
@@ -23,7 +20,6 @@ class CustomComponent extends Component {
 }
 
 describe('withDeepLinking', () => {
-
     beforeEach(() => {
         Linking.mockClear();
     });
@@ -34,42 +30,42 @@ describe('withDeepLinking', () => {
 
             done();
         };
-        const ComponentWithDeepLinking = withDeepLinking()(Component);
+        const ComponentWithDeepLinking = withDeepLinking()(CustomComponent);
 
         Linking.getInitialURL.mockReturnValueOnce(Promise.reject(new Error()));
 
-        shallow(<ComponentWithDeepLinking onGetInitialUrlError={onGetInitialUrlError} />);
+        renderer.create(<ComponentWithDeepLinking onGetInitialUrlError={onGetInitialUrlError} />);
     });
 
-    it('should call onCanOpenUrlError callback when app canOpenUrl throws an error', done => {
+    it('should call onCanOpenUrlError callback when canOpenUrl throws an error', done => {
         const onCanOpenUrlError = err => {
             expect(err).toBeInstanceOf(Error);
 
             done();
         };
-        const EnhancedComponent = withDeepLinking()(Component);
+        const EnhancedComponent = withDeepLinking()(CustomComponent);
 
         Linking.canOpenURL.mockReturnValueOnce(Promise.reject(new Error()));
         Linking.getInitialURL.mockReturnValueOnce(Promise.resolve(url));
 
-        shallow(<EnhancedComponent onCanOpenUrlError={onCanOpenUrlError} />);
+        renderer.create(<EnhancedComponent onCanOpenUrlError={onCanOpenUrlError} />);
     });
 
-    it('should call onUrlIsNotSupported callback when utl is not supported', done => {
+    it('should call onUrlIsNotSupported callback when a url is not supported', done => {
         const onUrlIsNotSupported = arg => {
             expect(arg).toBe(url);
 
             done();
         };
-        const EnhancedComponent = withDeepLinking()(Component);
+        const EnhancedComponent = withDeepLinking()(CustomComponent);
 
         Linking.canOpenURL.mockReturnValueOnce(Promise.resolve(false));
         Linking.getInitialURL.mockReturnValueOnce(Promise.resolve(url));
 
-        shallow(<EnhancedComponent onUrlIsNotSupported={onUrlIsNotSupported} />);
+        renderer.create(<EnhancedComponent onUrlIsNotSupported={onUrlIsNotSupported} />);
     });
 
-    it('should call onCannotHandleUrl callback when can not find callback for the url', done => {
+    it('should call onCannotHandleUrl callback when cannot find callback for the url', done => {
         const deepLinkingHandlerMock = {
             getUrlCallback: () => null
         };
@@ -78,16 +74,16 @@ describe('withDeepLinking', () => {
 
             done();
         };
-        const EnhancedComponent = withDeepLinking(deepLinkingHandlerMock)(Component);
+        const EnhancedComponent = withDeepLinking(deepLinkingHandlerMock)(CustomComponent);
 
 
         Linking.canOpenURL.mockReturnValueOnce(Promise.resolve(true));
         Linking.getInitialURL.mockReturnValueOnce(Promise.resolve(url));
 
-        shallow(<EnhancedComponent onCannotHandleUrl={onCannotHandleUrl} />);
+        renderer.create(<EnhancedComponent onCannotHandleUrl={onCannotHandleUrl} />);
     });
 
-    it('should call url callback and pass url as an argument', done => {
+    it('should call getUrlCallback method of deepLinkingHandler', done => {
         const deepLinkingHandlerMock = {
             getUrlCallback: arg => {
                 expect(arg).toBe(url);
@@ -95,12 +91,30 @@ describe('withDeepLinking', () => {
                 done();
             }
         };
-        const EnhancedComponent = withDeepLinking(deepLinkingHandlerMock)(Component);
+        const EnhancedComponent = withDeepLinking(deepLinkingHandlerMock)(CustomComponent);
 
         Linking.canOpenURL.mockReturnValueOnce(Promise.resolve(true));
         Linking.getInitialURL.mockReturnValueOnce(Promise.resolve(url));
 
-        shallow(<EnhancedComponent />);
+        renderer.create(<EnhancedComponent />);
+    });
+
+    it('should call the url callback and pass component props to the function', done => {
+        const componentProps = { a: 1 };
+        const urlCallbackMock = props => {
+            expect(props).toStrictEqual(componentProps);
+
+            done();
+        };
+        const deepLinkingHandlerMock = {
+            getUrlCallback: () => urlCallbackMock
+        };
+        const EnhancedComponent = withDeepLinking(deepLinkingHandlerMock)(CustomComponent);
+
+        Linking.canOpenURL.mockReturnValueOnce(Promise.resolve(true));
+        Linking.getInitialURL.mockReturnValueOnce(Promise.resolve(url));
+
+        renderer.create(<EnhancedComponent {...componentProps} />);
     });
 
     it('should have displayName', () => {
@@ -114,5 +128,4 @@ describe('withDeepLinking', () => {
 
         expect(EnhancedComponent.staticProperty).toBe(customComponentStaticPropertyValue);
     });
-
 });
