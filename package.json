@@ -2,12 +2,15 @@
     "name": "react-native-deep-link",
     "version": "0.2.8",
     "description": "React Native deep linking library",
-    "main": "./src/index.js",
+    "main": "./dist/index.js",
     "files": [
+        "dist/",
         "src/"
     ],
     "scripts": {
-        "eslint": "eslint ./src",
+        "build": "rimraf dist && babel src --out-dir dist",
+        "eslint": "eslint .",
+        "prepublish": "npm run build",
         "test": "jest"
     },
     "author": "Artsiom Staratsitarau <starotitorov1997@gmail.com>",
@@ -39,6 +42,7 @@
         "url-parse": "^1.2.0"
     },
     "devDependencies": {
+        "babel-cli": "^6.26.0",
         "babel-eslint": "^8.2.1",
         "babel-preset-react-native": "^4.0.0",
         "eslint": "^4.4.1",
@@ -55,7 +59,8 @@
         "react": "^16.0.0",
         "react-dom": "^16.0.1",
         "react-native": "^0.50.3",
-        "react-test-renderer": "^16.0.0"
+        "react-test-renderer": "^16.0.0",
+        "rimraf": "^2.6.3"
     },
     "jest": {
         "preset": "react-native",
@@ -72,7 +77,7 @@
         }
     },
     "lint-staged": {
-        "src/**/*.js": [
+        "*.js": [
             "eslint --fix",
             "git add"
         ]
